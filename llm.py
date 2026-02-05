@@ -98,14 +98,14 @@ class LLMClient:
                     "num_predict": 150,  # Keep responses short for voice
                 }
             },
-            timeout=60
+            timeout=120  # Increased timeout for first load
         )
         
         if response.status_code == 200:
             result = response.json()
             return result.get("message", {}).get("content", "").strip()
         else:
-            raise Exception(f"Ollama error: {response.status_code}")
+            raise RuntimeError(f"Ollama error: {response.status_code}")
             
     def _chat_stream(self, messages: List[Dict[str, str]]) -> Generator[str, None, None]:
         """Streaming chat completion (yields chunks)."""
@@ -133,7 +133,7 @@ class LLMClient:
                     if content:
                         yield content
         else:
-            raise Exception(f"Ollama error: {response.status_code}")
+            raise RuntimeError(f"Ollama error: {response.status_code}")
             
     def _mock_response(self, messages: List[Dict[str, str]]) -> str:
         """Generate a mock response when Ollama is not available."""

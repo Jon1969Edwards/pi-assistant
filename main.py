@@ -66,27 +66,36 @@ class PiAssistant:
         self.state = new_state
         self.face.set_emotion_for_state(new_state)
         
+    def _handle_keydown(self, event):
+        """Handle keyboard events."""
+        if event.key == pygame.K_ESCAPE:
+            self.running = False
+        elif event.key == pygame.K_SPACE:
+            self._handle_interaction()
+
+    def _handle_touch(self):
+        """Handle touch/mouse events."""
+        if TAP_TO_LISTEN and self.state == AssistantState.IDLE:
+            self.start_listening()
+        elif TAP_TO_CANCEL and self.state == AssistantState.SPEAKING:
+            self.cancel_speech()
+
+    def _handle_interaction(self):
+        """Handle user interaction (space bar or tap)."""
+        if self.state == AssistantState.IDLE:
+            self.start_listening()
+        elif self.state == AssistantState.SPEAKING:
+            self.cancel_speech()
+
     def handle_events(self):
         """Process pygame events (touch, keyboard, quit)."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-                
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.running = False
-                elif event.key == pygame.K_SPACE:
-                    # Space bar to start listening (for testing)
-                    if self.state == AssistantState.IDLE:
-                        self.start_listening()
-                    elif self.state == AssistantState.SPEAKING:
-                        self.cancel_speech()
-                        
+                self._handle_keydown(event)
             elif event.type == pygame.MOUSEBUTTONDOWN and TOUCH_ENABLED:
-                if TAP_TO_LISTEN and self.state == AssistantState.IDLE:
-                    self.start_listening()
-                elif TAP_TO_CANCEL and self.state == AssistantState.SPEAKING:
-                    self.cancel_speech()
+                self._handle_touch()
                     
     def start_listening(self):
         """Start recording user speech."""
@@ -153,9 +162,8 @@ class PiAssistant:
         
     def check_wake_word(self):
         """Check for wake word in background (when idle)."""
-        if self.state == AssistantState.IDLE:
-            if self.voice.check_wake_word():
-                self.start_listening()
+        if self.state == AssistantState.IDLE and self.voice.check_wake_word():
+            self.start_listening()
                 
     def update(self):
         """Main update loop - check queues and update state."""

@@ -131,7 +131,7 @@ class TextToSpeech:
             # Cleanup
             try:
                 os.unlink(wav_path)
-            except:
+            except OSError:
                 pass
                 
         except subprocess.TimeoutExpired:
@@ -219,10 +219,10 @@ class TextToSpeech:
             try:
                 self.current_process.terminate()
                 self.current_process.wait(timeout=1)
-            except:
+            except Exception:
                 try:
                     self.current_process.kill()
-                except:
+                except Exception:
                     pass
             self.current_process = None
             
@@ -230,7 +230,7 @@ class TextToSpeech:
         if self._pyttsx_engine:
             try:
                 self._pyttsx_engine.stop()
-            except:
+            except Exception:
                 pass
                 
         # Stop pygame mixer
@@ -238,7 +238,7 @@ class TextToSpeech:
             import pygame
             if pygame.mixer.get_init():
                 pygame.mixer.music.stop()
-        except:
+        except Exception:
             pass
             
     def set_voice(self, voice: str):
