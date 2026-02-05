@@ -1,0 +1,36 @@
+# Requirements for Pi AI Assistant
+# Install with: pip install -r requirements.txt
+
+# Core
+pygame>=2.5.0
+
+# HTTP requests for Ollama
+requests>=2.28.0
+
+# Audio
+sounddevice>=0.4.6
+numpy>=1.24.0
+
+# Speech Recognition (optional - for full features)
+# faster-whisper>=0.10.0  # Uncomment for speech-to-text
+# vosk>=0.3.45            # Uncomment for wake word detection
+
+# Text-to-Speech fallback
+pyttsx3>=2.90
+
+# Note: Some packages require system dependencies:
+# 
+# On Raspberry Pi / Linux:
+#   sudo apt install portaudio19-dev python3-pyaudio
+#   sudo apt install espeak-ng  # For pyttsx3
+#
+# For Piper TTS (recommended):
+#   pip install piper-tts
+#   # Or install from: https://github.com/rhasspy/piper
+#
+# For faster-whisper:
+#   pip install faster-whisper
+#
+# For Vosk wake word:
+#   pip install vosk
+#   # Download model from: https://alphacephei.com/vosk/models
