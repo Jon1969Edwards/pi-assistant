@@ -43,7 +43,7 @@ sudo apt install -y \
     portaudio19-dev \
     python3-pyaudio \
     espeak-ng \
-    libatlas-base-dev \
+    libopenblas-dev \
     libasound2-dev \
     alsa-utils \
     pulseaudio \
