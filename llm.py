@@ -100,7 +100,7 @@ class LLMClient:
                     "num_thread": 4,     # Use all Pi 4 cores
                 }
             },
-            timeout=120  # Increased timeout for first load
+            timeout=300  # Long timeout for Pi CPU inference
         )
         
         if response.status_code == 200:
