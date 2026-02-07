@@ -95,7 +95,9 @@ class LLMClient:
                 "options": {
                     "temperature": 0.7,
                     "top_p": 0.9,
-                    "num_predict": 150,  # Keep responses short for voice
+                    "num_predict": 75,   # Shorter responses = faster on Pi
+                    "num_ctx": 512,      # Smaller context window for speed
+                    "num_thread": 4,     # Use all Pi 4 cores
                 }
             },
             timeout=120  # Increased timeout for first load
@@ -118,7 +120,9 @@ class LLMClient:
                 "options": {
                     "temperature": 0.7,
                     "top_p": 0.9,
-                    "num_predict": 150,
+                    "num_predict": 75,
+                    "num_ctx": 512,
+                    "num_thread": 4,
                 }
             },
             stream=True,
