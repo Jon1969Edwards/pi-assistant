@@ -63,14 +63,22 @@ class VoiceRecognizer:
         if self._whisper_model is None:
             try:
                 from faster_whisper import WhisperModel
-                
-                # Force CPU mode on Windows (no CUDA dependency)
+
                 print(f"Loading Whisper model '{WHISPER_MODEL}'...")
-                self._whisper_model = WhisperModel(
-                    WHISPER_MODEL,
-                    device="cpu",
-                    compute_type="int8"
-                )
+                # Suppress ONNX Runtime GPU warning during model load
+                stderr_fd = os.dup(2)
+                devnull = os.open(os.devnull, os.O_WRONLY)
+                os.dup2(devnull, 2)
+                try:
+                    self._whisper_model = WhisperModel(
+                        WHISPER_MODEL,
+                        device="cpu",
+                        compute_type="int8"
+                    )
+                finally:
+                    os.dup2(stderr_fd, 2)
+                    os.close(stderr_fd)
+                    os.close(devnull)
                 print("Whisper model loaded!")
             except ImportError:
                 print("Warning: faster-whisper not installed. Using mock transcription.")
