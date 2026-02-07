@@ -113,8 +113,7 @@ class PiAssistant:
         def record_and_transcribe():
             try:
                 text = self.voice.listen_and_transcribe()
-                if text:
-                    self.speech_queue.put(text)
+                self.speech_queue.put(text)  # Always signal (even None)
             except Exception as e:
                 print(f"Voice recognition error: {e}")
                 self.speech_queue.put(None)
