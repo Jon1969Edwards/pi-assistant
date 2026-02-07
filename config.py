@@ -22,12 +22,16 @@ STATUS_LISTENING = (255, 100, 100)   # Red - recording voice
 STATUS_THINKING = (255, 200, 100)    # Orange - LLM processing
 STATUS_SPEAKING = (100, 255, 150)    # Green - speaking response
 
-# === OLLAMA SETTINGS ===
+# === LLM SETTINGS ===
+# Set to "openai" for cloud API (fast) or "ollama" for local (slow but offline)
+LLM_BACKEND = os.environ.get("LLM_BACKEND", "openai")
+
+# OpenAI settings
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_MODEL = "gpt-4o-mini"  # Fast and cheap
+
+# Ollama settings (local fallback)
 OLLAMA_HOST = "http://localhost:11434"
-# For Pi 4 with 4GB RAM, use smaller models:
-# - "qwen2:0.5b" (recommended)
-# - "tinyllama"
-# - "phi3:mini" (if 8GB RAM)
 LLM_MODEL = "qwen2:0.5b"
 
 # System prompt for the AI personality
