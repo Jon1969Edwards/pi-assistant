@@ -5,7 +5,7 @@ A local AI assistant with animated face, voice control, and LLM integration.
 """
 
 import os
-os.environ["ONNXRUNTIME_DISABLE_GPU"] = "1"
+os.environ["ORT_LOG_LEVEL"] = "3"  # Suppress ONNX Runtime warnings (show errors only)
 
 import asyncio
 import threading

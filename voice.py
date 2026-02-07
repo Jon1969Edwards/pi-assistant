@@ -11,7 +11,7 @@ import numpy as np
 from typing import Optional, Callable
 
 # Suppress ONNX Runtime GPU warning on Pi (no GPU available)
-os.environ["ONNXRUNTIME_DISABLE_GPU"] = "1"
+os.environ["ORT_LOG_LEVEL"] = "3"
 
 from config import (
     WAKE_WORD, WAKE_WORD_SENSITIVITY,
