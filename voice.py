@@ -268,15 +268,23 @@ class VoiceRecognizer:
             return None
             
         try:
-            segments, info = self._whisper_model.transcribe(
-                audio,
-                language="en",
-                beam_size=1,  # Faster
-                best_of=1,
-                vad_filter=True
-            )
-            
-            text = " ".join(segment.text for segment in segments).strip()
+            # Suppress ONNX Runtime GPU warning during inference
+            stderr_fd = os.dup(2)
+            devnull = os.open(os.devnull, os.O_WRONLY)
+            os.dup2(devnull, 2)
+            try:
+                segments, _ = self._whisper_model.transcribe(
+                    audio,
+                    language="en",
+                    beam_size=1,  # Faster
+                    best_of=1,
+                    vad_filter=True
+                )
+                text = " ".join(segment.text for segment in segments).strip()
+            finally:
+                os.dup2(stderr_fd, 2)
+                os.close(stderr_fd)
+                os.close(devnull)
             return text if text else None
             
         except Exception as e:
