@@ -92,6 +92,7 @@ class LLMClient:
                 "model": self.model,
                 "messages": messages,
                 "stream": False,
+                "keep_alive": "30m",     # Keep model loaded in memory
                 "options": {
                     "temperature": 0.7,
                     "top_p": 0.9,
@@ -117,6 +118,7 @@ class LLMClient:
                 "model": self.model,
                 "messages": messages,
                 "stream": True,
+                "keep_alive": "30m",
                 "options": {
                     "temperature": 0.7,
                     "top_p": 0.9,
@@ -126,7 +128,7 @@ class LLMClient:
                 }
             },
             stream=True,
-            timeout=60
+            timeout=300
         )
         
         if response.status_code == 200:
