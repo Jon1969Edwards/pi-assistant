@@ -4,6 +4,9 @@ Pi AI Assistant - Main Application
 A local AI assistant with animated face, voice control, and LLM integration.
 """
 
+import os
+os.environ["ONNXRUNTIME_DISABLE_GPU"] = "1"
+
 import asyncio
 import threading
 import queue
@@ -224,6 +227,19 @@ class PiAssistant:
             self.screen, color,
             (0, SCREEN_HEIGHT - bar_height, SCREEN_WIDTH, bar_height)
         )
+
+        # Draw status text above the bar
+        status_text = {
+            AssistantState.IDLE: "Listening for 'Hey Max'...",
+            AssistantState.LISTENING: "Listening...",
+            AssistantState.THINKING: "Thinking...",
+        }
+        text = status_text.get(self.state)
+        if text:
+            font = pygame.font.SysFont(None, 32)
+            text_surface = font.render(text, True, color)
+            text_rect = text_surface.get_rect(centerx=SCREEN_WIDTH // 2, bottom=SCREEN_HEIGHT - bar_height - 8)
+            self.screen.blit(text_surface, text_rect)
         
     def run(self):
         """Main application loop."""

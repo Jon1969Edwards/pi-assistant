@@ -4,10 +4,14 @@ Voice Recognition Module
 Handles wake word detection and speech-to-text transcription.
 """
 
+import os
 import threading
 import queue
 import numpy as np
 from typing import Optional, Callable
+
+# Suppress ONNX Runtime GPU warning on Pi (no GPU available)
+os.environ["ONNXRUNTIME_DISABLE_GPU"] = "1"
 
 from config import (
     WAKE_WORD, WAKE_WORD_SENSITIVITY,
