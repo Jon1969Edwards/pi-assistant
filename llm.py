@@ -99,10 +99,10 @@ class LLMClient:
                     "num_predict": 75,   # Shorter responses = faster on Pi
                     "num_ctx": 512,      # Smaller context window for speed
                     "num_thread": 4,     # Use all Pi 4 cores
-                }
-            },
-;            timeout=300  # Long timeout for Pi CPU inference
-        )
+        }
+    },
+    timeout=300  # Long timeout for Pi CPU inference
+)
         
         if response.status_code == 200:
             result = response.json()
