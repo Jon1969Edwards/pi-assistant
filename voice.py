@@ -35,6 +35,7 @@ class VoiceRecognizer:
         self.wake_word_callback: Optional[Callable] = None
         self.wake_word_thread: Optional[threading.Thread] = None
         self.wake_word_running = False
+        self.wake_word_paused = False  # Pause during processing
         
         # Initialize components lazily
         self._audio_interface = None
@@ -146,6 +147,8 @@ class VoiceRecognizer:
                 while self.wake_word_running:
                     try:
                         data = self.audio_queue.get(timeout=0.5)
+                        if self.wake_word_paused:
+                            continue  # Discard audio while processing
                         if self._vosk_recognizer.AcceptWaveform(data):
                             result = json.loads(self._vosk_recognizer.Result())
                             text = result.get("text", "").lower()

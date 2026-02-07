@@ -65,6 +65,8 @@ class PiAssistant:
         """Change the assistant's state and update face."""
         self.state = new_state
         self.face.set_emotion_for_state(new_state)
+        if new_state == AssistantState.IDLE:
+            self.voice.wake_word_paused = False
         
     def _handle_keydown(self, event):
         """Handle keyboard events."""
@@ -99,6 +101,9 @@ class PiAssistant:
                     
     def start_listening(self):
         """Start recording user speech."""
+        if self.state != AssistantState.IDLE:
+            return  # Ignore wake word if already processing
+        self.voice.wake_word_paused = True
         self.set_state(AssistantState.LISTENING)
         
         # Start voice recording in background thread
